@@ -1,0 +1,4 @@
+CREATE TABLE `users`(
+   `ID`   INT               NOT NULL AUTO_INCREMENT,  PRIMARY KEY (ID),
+   `NAME` VARCHAR (100)     NOT NULL
+);

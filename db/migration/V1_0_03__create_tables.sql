@@ -1,0 +1,8 @@
+CREATE TABLE `events`(
+   `ID` INT NOT NULL AUTO_INCREMENT,   PRIMARY KEY (ID),
+   `ACTION` VARCHAR (100)     NOT NULL,
+   `ID_USER`  INT               NOT NULL,
+   `ID_FILE`   INT               NOT NULL,
+    FOREIGN KEY (ID_USER)  REFERENCES users (ID),
+     FOREIGN KEY (ID_FILE)  REFERENCES files (ID)
+);
