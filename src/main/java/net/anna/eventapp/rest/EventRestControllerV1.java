@@ -1,13 +1,15 @@
-package net.anna.tutorial;
+package net.anna.eventapp.rest;
 
 
 
-import event.controller.EventController;
-import event.controller.FileController;
-import event.controller.UserController;
-import event.model.Event;
-import event.model.File;
-import event.model.User;
+import com.google.gson.Gson;
+import net.anna.eventapp.dto.EventDto;
+import net.anna.eventapp.dto.FileDto;
+import net.anna.eventapp.model.EventEntity;
+import net.anna.eventapp.model.FileEntity;
+import net.anna.eventapp.model.UserEntity;
+import net.anna.eventapp.service.EventService;
+import net.anna.eventapp.service.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,11 +21,11 @@ import java.io.PrintWriter;
 import java.util.List;
 
 
-public class EventServlet  extends HttpServlet {
+public class EventRestControllerV1 extends HttpServlet {
 
-    EventController eventController = new EventController();
-    UserController userController = new UserController();
-    FileController fileController = new FileController();
+    EventService eventService = new EventService();
+    UserService userService = new UserService();
+    FileService fileService = new FileService();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -43,14 +45,18 @@ public class EventServlet  extends HttpServlet {
         PrintWriter messageWriter = response.getWriter();
         switch (action == null ? "info" : action) {
             case "getall":
-                List<Event> events = eventController.getAll();
-                messageWriter.println(events);
+                List<EventEntity> events = eventService.getAll();
+                for(EventEntity event : events) {
+                    EventDto eventDto = EventDto.fromEntity(event);
+                    messageWriter.println(new Gson().toJson(eventDto));
+                }
                 break;
-            case "getbyid": //          default:
+            case "getbyid":
                 String idS = request.getParameter("id");
                 Long id = Long.parseLong(idS);
-                Event event = eventController.getById(id);
-                messageWriter.println(event);
+                EventEntity event1 = eventService.getById(id);
+                EventDto eventDto1 = EventDto.fromEntity(event1);
+                messageWriter.println(new Gson().toJson(eventDto1));
                 break;
             default:
                 messageWriter.println("Error");
@@ -78,11 +84,12 @@ public class EventServlet  extends HttpServlet {
                 String idS2 = request.getParameter("file_id");
                 Long file_id = Long.parseLong(idS2);
 
-                User u =  userController.getById(user_id);
-                File f = fileController.getById(file_id);
+                UserEntity u =  userService.getById(user_id);
+                FileEntity f = fileService.getById(file_id);
 
-                Event event = eventController.update(id,action1,f,u);
-                messageWriter.println(event);
+                EventEntity event = eventService.update(id,action1,f,u);
+                EventDto eventDto2 = EventDto.fromEntity(event);
+                messageWriter.println(new Gson().toJson(eventDto2));
                 break;
             case "save":
                 String action2 = request.getParameter("eventaction");
@@ -95,22 +102,26 @@ public class EventServlet  extends HttpServlet {
                 Long file_id4 = Long.parseLong(idS4);
                 messageWriter.println("file_id4 = "+  file_id4);
 
-                User u1 =  userController.getById(user_id3);
-                File f1 = fileController.getById(file_id4);
+                UserEntity u1 =  userService.getById(user_id3);
+                FileEntity f1 = fileService.getById(file_id4);
 
-                Event event1 = eventController.save(action2,f1,u1);
-                messageWriter.println(event1);
+                EventEntity event1 = eventService.save(action2,f1,u1);
+                EventDto eventDto4 = EventDto.fromEntity(event1);
+                messageWriter.println(new Gson().toJson(eventDto4));
                 break;
             case "delete":
                 String idS5 = request.getParameter("id");
                 Long id1 = Long.parseLong(idS5);
-                Event event2 = eventController.getById(id1);
-                if (event2==null) {
-                    messageWriter.println("Event ( id = "+id1+" ) does not exist");
+                EventEntity eventEntity = eventService.getById(id1);
+
+                EventDto eventDto5 = EventDto.fromEntity(eventEntity);
+                messageWriter.println("Event " + new Gson().toJson(eventDto5));
+                if (eventEntity==null) {
+                    messageWriter.println(" does not exist");
                 }
                 else{
-                    fileController.deleteById(id1);
-                    messageWriter.println("File ( id = "+event2.getId()+" ) deleted");
+                    fileService.deleteById(id1);
+                    messageWriter.println("  deleted");
                 }
                 break;
             default:

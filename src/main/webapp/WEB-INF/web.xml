@@ -7,36 +7,36 @@
 
 
  <servlet>
-    <servlet-name>UserServlet</servlet-name>
-    <servlet-class>net.anna.tutorial.UserServlet</servlet-class>
+    <servlet-name>UserRestControllerV1</servlet-name>
+    <servlet-class>net.anna.eventapp.rest.UserRestControllerV1</servlet-class>
 <!--    <load-on-startup>1</load-on-startup>-->
   </servlet>
 
     <servlet>
-        <servlet-name>FileServlet</servlet-name>
-        <servlet-class>net.anna.tutorial.FileServlet</servlet-class>
+        <servlet-name>FileRestControllerV1</servlet-name>
+        <servlet-class>net.anna.eventapp.rest.FileRestControllerV1</servlet-class>
 <!--        <load-on-startup>1</load-on-startup>-->
     </servlet>
 
     <servlet>
-        <servlet-name>EventServlet</servlet-name>
-        <servlet-class>net.anna.tutorial.EventServlet</servlet-class>
+        <servlet-name>EventRestControllerV1</servlet-name>
+        <servlet-class>net.anna.eventapp.rest.EventRestControllerV1</servlet-class>
         <!--        <load-on-startup>1</load-on-startup>-->
     </servlet>
 
   <servlet-mapping>
-    <servlet-name>UserServlet</servlet-name>
-    <url-pattern>/UserServlet</url-pattern>
+    <servlet-name>UserRestControllerV1</servlet-name>
+    <url-pattern>/UserRestControllerV1</url-pattern>
   </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>FileServlet</servlet-name>
-        <url-pattern>/FileServlet</url-pattern>
+        <servlet-name>FileRestControllerV1</servlet-name>
+        <url-pattern>/FileRestControllerV1</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>EventServlet</servlet-name>
-        <url-pattern>/EventServlet</url-pattern>
+        <servlet-name>EventRestControllerV1</servlet-name>
+        <url-pattern>/EventRestControllerV1</url-pattern>
     </servlet-mapping>
 
   </web-app>

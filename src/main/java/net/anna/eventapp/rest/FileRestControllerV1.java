@@ -1,7 +1,9 @@
-package net.anna.tutorial;
+package net.anna.eventapp.rest;
 
-import event.controller.UserController;
-import event.model.User;
+import com.google.gson.Gson;
+import net.anna.eventapp.dto.FileDto;
+import net.anna.eventapp.model.FileEntity;
+import net.anna.eventapp.service.FileService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,10 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class UserServlet  extends HttpServlet {
+public class FileRestControllerV1 extends HttpServlet {
 
-    UserController userController = new UserController();
-    User u;
+    FileService fileService = new FileService();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -30,20 +31,24 @@ public class UserServlet  extends HttpServlet {
         String action = request.getParameter("action");
         System.out.println("Enter doGet" +action);
 
+
         response.setContentType("application/json");
         PrintWriter messageWriter = response.getWriter();
         switch (action == null ? "info" : action) {
             case "getall":
-                List<User> userList;// = new ArrayList<>();
-                userList = userController.getAll();
-                messageWriter.println(userList);
+                List<FileEntity> files;
+                files = fileService.getAll();
+                for(FileEntity file1 : files){
+                      FileDto fileDto1 = FileDto.fromEntity(file1);
+                    messageWriter.println(new Gson().toJson(fileDto1));
+                }
                 break;
-            case "getbyid":
+            case "getbyid": //          default:
                 String idS = request.getParameter("id");
                 Long id = Long.parseLong(idS);
-
-                u=userController.getById(id);
-                messageWriter.println(u);
+                FileEntity file = fileService.getById(id);
+                FileDto fileDto = FileDto.fromEntity(file);
+                messageWriter.println(new Gson().toJson(fileDto));
                 break;
             default:
                 messageWriter.println("Error");
@@ -62,33 +67,38 @@ public class UserServlet  extends HttpServlet {
             case "update":
                 String idS = request.getParameter("id");
                 Long id = Long.parseLong(idS);
-                String name = request.getParameter("name");
-                User u=userController.getById(id);
-                User u1 = userController.update(u.getId(),name);
-                messageWriter.println(u1);
+                String path = request.getParameter("path");
+                FileEntity file1 = fileService.getById(id);
+                FileEntity file2 = fileService.update(file1.getId(),path);
+                FileDto fileDto1 = FileDto.fromEntity(file2);
+                messageWriter.println(new Gson().toJson(fileDto1));
                 break;
             case "save":
-                String name1 = request.getParameter("name");
-                User user = new User();
-                user.setName(name1);
-                User user1 = userController.save(user.getName());
-                messageWriter.println(user1);
+                String path1 = request.getParameter("path");
+                FileEntity file3 = new FileEntity();
+                file3.setPath(path1);
+                FileEntity file4 = fileService.save(file3.getPath());
+                FileDto fileDto2 = FileDto.fromEntity(file4);
+                messageWriter.println(new Gson().toJson(fileDto2));
                 break;
-            case "delete":          //  default:
+            case "delete":
                 String idS1 = request.getParameter("id");
                 Long id1 = Long.parseLong(idS1);
-                User user2 = userController.getById(id1);
-                if (user2==null) {
-                    messageWriter.println("User ( id = "+id1+" ) does not exist");
+                FileEntity file5 = fileService.getById(id1);
+                FileDto fileDto3 = FileDto.fromEntity(file5);
+                messageWriter.println("File " + new Gson().toJson(fileDto3));
+                if (file5==null) {
+                    messageWriter.println(" does not exist");
                 }
                 else{
-                    userController.deleteById(id1);
-                    messageWriter.println("User "+user2.getName()+" deleted");
+                    fileService.deleteById(id1);
+                    messageWriter.println(" deleted");
                 }
                 break;
             default:
                 messageWriter.println("Error");
                 break;
 
+        }
     }
-}}
+}

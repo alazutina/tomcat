@@ -1,10 +1,12 @@
-package event.model;
+package net.anna.eventapp.model;
+
+
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "events")
-public class Event {
+public class EventEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,19 +18,19 @@ public class Event {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_FILE", referencedColumnName = "ID")
 //    @Column(name="ID_FILE")
-    private File file;
+    private FileEntity fileEntity;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER", referencedColumnName = "id")
-    private User user;
+    private UserEntity userEntity;
 
-    public Event(){}
+    public EventEntity(){}
 
-    public Event(Long id, String action, File file, User user){
-        this.id=id;
-        this.action= action;
-        this.file=file;
-        this.user=user;
+    public EventEntity(Long id, String action, FileEntity fileEntity, UserEntity userEntity){
+        this.id = id;
+        this.action = action;
+        this.fileEntity = fileEntity;
+        this.userEntity = userEntity;
     }
 
     public Long getId() {
@@ -39,12 +41,12 @@ public class Event {
         return action;
     }
 
-    public File getFile() {
-        return file;
+    public FileEntity getFile() {
+        return fileEntity;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
     public void setId(Long id) {
@@ -55,12 +57,12 @@ public class Event {
         this.action = action;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setFileEntity(FileEntity fileEntity) {
+        this.fileEntity = fileEntity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
@@ -68,12 +70,11 @@ public class Event {
         return "{" +
                 "\"id\": \"" + id + "\"" +
                 ",\"action\": \"" + action + "\"" +
-                ",\"user_id\": \"" + user.getId() + "\"" +
-                ",\"file_id\": \"" + file.getId() + "\"" +
+                ",\"user_id\": \"" + userEntity.getId() + "\"" +
+                ",\"file_id\": \"" + fileEntity.getId() + "\"" +
 //                ", file=" + file +
 //                ", user=" + user +
                 '}';
 
     }
 }
-

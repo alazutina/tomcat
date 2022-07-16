@@ -3,13 +3,16 @@ package session;
 
 import java.util.Properties;
 
+import net.anna.eventapp.model.EventEntity;
+import net.anna.eventapp.model.FileEntity;
+import net.anna.eventapp.model.UserEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import event.model.*;
+import net.anna.eventapp.model.*;
 
 
 /**
@@ -36,9 +39,9 @@ public class HibernateUtil {
                 settings.put(Environment.ENABLE_LAZY_LOAD_NO_TRANS,"true");
 
                 configuration.setProperties(settings);
-                configuration.addAnnotatedClass(File.class);
-                configuration.addAnnotatedClass(User.class);
-                configuration.addAnnotatedClass(Event.class);
+                configuration.addAnnotatedClass(FileEntity.class);
+                configuration.addAnnotatedClass(UserEntity.class);
+                configuration.addAnnotatedClass(EventEntity.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();

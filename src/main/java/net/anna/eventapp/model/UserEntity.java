@@ -1,4 +1,4 @@
-package event.model;
+package net.anna.eventapp.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -6,14 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
-
-//    User
-//    int id
-//    String name
-//-------------------------
-//    CREATE TABLE users(   ID   INT               NOT NULL AUTO_INCREMENT,  PRIMARY KEY (ID),
-//                          NAME VARCHAR (100)     NOT NULL);
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,24 +15,15 @@ public class User {
     @Column(name="NAME")
     private  String name;
 
-//    @OneToMany//(fetch = FetchType.LAZY)
-// ///   @JoinColumn(name = "id_user")
-////    @JoinTable(name = "events",
-////            joinColumns = { @JoinColumn(name = "ID") },
-////            inverseJoinColumns = { @JoinColumn(name = "ID_USER") }
-////    )
-//    private Set<Event> eventSet = new HashSet<Event>();
-
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER")
-    private Set<Event> events = new HashSet<>();
+    private Set<EventEntity> events = new HashSet<>();
 
-    public User(){
+    public UserEntity(){
 
     }
 
-    public User(Long id, String name){
+    public UserEntity(Long id, String name){
         this.id = id;
         this.name = name;
     }
@@ -52,7 +36,7 @@ public class User {
         return name;
     }
 
-    public Set<Event> getEvents() {
+    public Set<EventEntity> getEvents() {
         return events;
     }
 
@@ -64,7 +48,7 @@ public class User {
         this.name = name;
     }
 
-    public void setEvents(Set<Event> events) {
+    public void setEvents(Set<EventEntity> events) {
         this.events = events;
     }
 
@@ -73,8 +57,7 @@ public class User {
         return "{" +
                 "\"id\": \"" + id + "\"" +
                 ",\"name\": \"" + name + "\"" +
-               ", \"eventSet\": " + events +
+                ", \"eventSet\": " + events +
                 '}';
     }
 }
-

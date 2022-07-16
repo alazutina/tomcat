@@ -1,30 +1,29 @@
-package event.repository.hibernate;
+package net.anna.eventapp.repository.hibernate;
 
-import event.model.Event;
-import event.model.File;
-import event.repository.FileRepository;
+import net.anna.eventapp.repository.UserRepository;
+import net.anna.eventapp.model.UserEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import session.HibernateUtil;
 
 import java.util.List;
 
-public class HibernateFile implements FileRepository {
+public class HibernateUser implements UserRepository {
 
     private static SessionFactory sessionFactory=
             HibernateUtil.getSessionFactory();
 
-    public File save(File file){    // public void addTag(long id, String name) {
+    public UserEntity save(UserEntity user){    // public void addTag(long id, String name) {
         Transaction transaction = null;
         try(Session session = sessionFactory.openSession()) {
+        //    System.out.println(user+"!");
             transaction = session.beginTransaction();
-            File file1 = new File(1l, file.getPath());
-            session.save(file1);//    session.save(tag);
+            UserEntity user1 = new UserEntity(1l, user.getName());
+            session.save(user1);//    session.save(tag);
             transaction.commit();
-            return  file1;}
+            return  user1;}
         catch (Exception e){
             if (transaction != null) {
                 System.out.println("");
@@ -34,14 +33,14 @@ public class HibernateFile implements FileRepository {
         return null;
     }
 
-//
-    public List<File> getAll() {
+        public List<UserEntity> getAll() {
         Transaction transaction = null;
         try(      Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            List<File> files = session.createQuery("from File").list();// session.createQuery("FROM tags").list();
+            Query query = session.createQuery("from UserEntity u Left Join Fetch u.events ", UserEntity.class);
+            List<UserEntity> users = query.getResultList();
             transaction.commit();
-            return files;
+            return users;
         }
         catch (Exception e){
             if (transaction != null) {
@@ -52,13 +51,14 @@ public class HibernateFile implements FileRepository {
         return null;
     }
 
-    public File getById(Long id) {
+    public UserEntity getById(Long id) {
         Transaction transaction = null;
         try(   Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            File file = (File) session.get(File.class, id);
+            Query query = session.createQuery("from UserEntity u Left Join FETCH u.events where u.id = "+ id , UserEntity.class);
+            UserEntity user= (UserEntity) query.getSingleResult();
             transaction.commit();
-            return file;
+            return user;
         }
         catch (Exception e){
             if (transaction != null) {
@@ -68,20 +68,19 @@ public class HibernateFile implements FileRepository {
         }
         return null;
     }
-    //4
 
     public void deleteById(Long id) {
         Transaction transaction = null;
         try (        Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
+           UserEntity user = (UserEntity) session.get(UserEntity.class, id);
 
-            File file = (File) session.get(File.class, id);
-            String hql = "delete Event where id_file= :id";
+            String hql = "delete EventEntity where id_user= :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             query.executeUpdate();
 
-            session.delete(file);
+            session.delete(user);
             transaction.commit();
         }
         catch (Exception e){
@@ -92,15 +91,16 @@ public class HibernateFile implements FileRepository {
         }
     }
 
-    public File update(File t) {//    public void updateTag(long id, String name) {
+
+    public UserEntity update(UserEntity u) {//    public void updateTag(long id, String name) {
         Transaction transaction = null;
         try (     Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            File file = (File) session.get(File.class, t.getId());
-            file.setPath(t.getPath());
-            session.update(file);
+            UserEntity user = (UserEntity) session.get(UserEntity.class,u.getId());
+            user.setName(u.getName());
+            session.update(user);
             transaction.commit();
-            return file;
+            return user;
         }
         catch (Exception e){
             if (transaction != null) {

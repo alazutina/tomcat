@@ -1,31 +1,28 @@
-package event.repository.hibernate;
+package net.anna.eventapp.repository.hibernate;
 
-import event.model.File;
-import event.model.User;
-import event.repository.UserRepository;
+import net.anna.eventapp.repository.FileRepository;
+import net.anna.eventapp.model.FileEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import session.HibernateUtil;
 
 import java.util.List;
 
-public class HibernateUser implements UserRepository {
+public class HibernateFile implements FileRepository {
 
     private static SessionFactory sessionFactory=
             HibernateUtil.getSessionFactory();
 
-    public User save(User user){    // public void addTag(long id, String name) {
+    public FileEntity save(FileEntity file){    // public void addTag(long id, String name) {
         Transaction transaction = null;
         try(Session session = sessionFactory.openSession()) {
-        //    System.out.println(user+"!");
             transaction = session.beginTransaction();
-            User user1 = new User(1l, user.getName());
-            session.save(user1);//    session.save(tag);
+            FileEntity file1 = new FileEntity(1l, file.getPath());
+            session.save(file1);//    session.save(tag);
             transaction.commit();
-            return  user1;}
+            return  file1;}
         catch (Exception e){
             if (transaction != null) {
                 System.out.println("");
@@ -35,14 +32,13 @@ public class HibernateUser implements UserRepository {
         return null;
     }
 
-        public List<User> getAll() {
+    public List<FileEntity> getAll() {
         Transaction transaction = null;
         try(      Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from User u Left Join Fetch u.events ", User.class);
-            List<User> users = query.getResultList();
+            List<FileEntity> files = session.createQuery("from FileEntity").list();// session.createQuery("FROM tags").list();
             transaction.commit();
-            return users;
+            return files;
         }
         catch (Exception e){
             if (transaction != null) {
@@ -53,14 +49,13 @@ public class HibernateUser implements UserRepository {
         return null;
     }
 
-    public User getById(Long id) {
+    public FileEntity getById(Long id) {
         Transaction transaction = null;
         try(   Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from User u Left Join FETCH u.events where u.id = "+ id , User.class);
-            User user= (User) query.getSingleResult();
+            FileEntity file = (FileEntity) session.get(FileEntity.class, id);
             transaction.commit();
-            return user;
+            return file;
         }
         catch (Exception e){
             if (transaction != null) {
@@ -70,19 +65,20 @@ public class HibernateUser implements UserRepository {
         }
         return null;
     }
+    //4
 
     public void deleteById(Long id) {
         Transaction transaction = null;
         try (        Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
-           User user = (User) session.get(User.class, id);
 
-            String hql = "delete Event where id_user= :id";
+            FileEntity file = (FileEntity) session.get(FileEntity.class, id);
+            String hql = "delete Event where id_file= :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             query.executeUpdate();
 
-            session.delete(user);
+            session.delete(file);
             transaction.commit();
         }
         catch (Exception e){
@@ -93,16 +89,15 @@ public class HibernateUser implements UserRepository {
         }
     }
 
-
-    public User update(User u) {//    public void updateTag(long id, String name) {
+    public FileEntity update(FileEntity t) {//    public void updateTag(long id, String name) {
         Transaction transaction = null;
         try (     Session session = this.sessionFactory.openSession()){
             transaction = session.beginTransaction();
-            User user = (User) session.get(User.class,u.getId());
-            user.setName(u.getName());
-            session.update(user);
+            FileEntity file = (FileEntity) session.get(FileEntity.class, t.getId());
+            file.setPath(t.getPath());
+            session.update(file);
             transaction.commit();
-            return user;
+            return file;
         }
         catch (Exception e){
             if (transaction != null) {

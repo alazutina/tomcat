@@ -1,18 +1,10 @@
-package event.model;
-
+package net.anna.eventapp.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "files")
-public class File {
-
-//    File
-//    int id
-//    String path
-//----------------------------------------------------
-//    CREATE TABLE files( ID INT NOT NULL AUTO_INCREMENT,   PRIMARY KEY (ID),
-//    PATH VARCHAR (100)     NOT NULL);
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +13,10 @@ public class File {
     @Column(name="PATH")
     private  String path;
 
-    public File(){
+    public FileEntity(){
     }
 
-    public File(Long id, String path){
+    public FileEntity(Long id, String path){
         this.id=id;
         this.path=path;
     }
@@ -51,6 +43,5 @@ public class File {
                 "\"id\": \"" + id + "\"" +
                 ",\"path\": \"" + path + "\"" +
                 '}';
-       }
+    }
 }
-

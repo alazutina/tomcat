@@ -1,13 +1,10 @@
-package event.repository.hibernate;
+package net.anna.eventapp.repository.hibernate;
 
-import event.model.Event;
-import event.model.File;
-import event.model.User;
-import event.repository.EventRepository;
+import net.anna.eventapp.repository.EventRepository;
+import net.anna.eventapp.model.EventEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import session.HibernateUtil;
 
@@ -18,7 +15,7 @@ public class HibernateEvent implements EventRepository {
     private static SessionFactory sessionFactory=
             HibernateUtil.getSessionFactory();
 
-    public Event save(Event event) {    // public void addTag(long id, String name) {
+    public EventEntity save(EventEntity event) {    // public void addTag(long id, String name) {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -34,16 +31,12 @@ public class HibernateEvent implements EventRepository {
         return null;
     }
 
-    //
-    public List<Event> getAll() {
+    public List<EventEntity> getAll() {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from Event ");
-//            List<File> files = session.createQuery("from File").list();// session.createQuery("FROM tags").list();
-//            Query query = session.createQuery("from User u Left Join Fetch u.events ", User.class);
-//            List<User> users = query.getResultList();
-            List<Event> events = query.getResultList();
+            Query query = session.createQuery("from EventEntity ");
+            List<EventEntity> events = query.getResultList();
             transaction.commit();
             return events;
         } catch (Exception e) {
@@ -55,11 +48,11 @@ public class HibernateEvent implements EventRepository {
         return null;
     }
 
-    public Event getById(Long id) {
+    public EventEntity getById(Long id) {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Event event = (Event) session.get(Event.class, id);
+            EventEntity event = (EventEntity) session.get(EventEntity.class, id);
             transaction.commit();
             return event;
         } catch (Exception e) {
@@ -76,13 +69,10 @@ public class HibernateEvent implements EventRepository {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            String hql = "delete Event where id= :id";
+            String hql = "delete EventEntity where id= :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             query.executeUpdate();
-
-//            Event event = (Event) session.get(Event.class, id);
-//            session.delete(event);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -92,11 +82,11 @@ public class HibernateEvent implements EventRepository {
         }
     }
 
-    public Event update(Event event) {//    public void updateTag(long id, String name) {
+    public EventEntity update(EventEntity event) {//    public void updateTag(long id, String name) {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Event event1 = new Event(event.getId(), event.getAction(), event.getFile(), event.getUser());
+            EventEntity event1 = new EventEntity(event.getId(), event.getAction(), event.getFile(), event.getUser());
             session.update(event1);
             transaction.commit();
             return event1;

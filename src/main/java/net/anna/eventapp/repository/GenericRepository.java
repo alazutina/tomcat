@@ -1,4 +1,4 @@
-package event.repository;
+package net.anna.eventapp.repository;
 
 import java.util.List;
 
