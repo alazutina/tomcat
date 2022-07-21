@@ -31,9 +31,9 @@ public class HibernateUtil {
                 // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mysql://localhost/test");
-                settings.put(Environment.USER, "test");
-                settings.put(Environment.PASS, "123456");
+                settings.put(Environment.URL, "jdbc:mysql://eu-cdbr-west-03.cleardb.net/heroku_4d19e1933517678");
+                settings.put(Environment.USER, "ba5ded4bf517f0");
+                settings.put(Environment.PASS, "bcda656c");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
                 settings.put(Environment.ENABLE_LAZY_LOAD_NO_TRANS,"true");
