@@ -146,7 +146,7 @@
           <version>${tomcat.plugin.version}</version>
           <configuration>
             <path>/</path>
-            <port>8088</port>
+            <port>$PORT</port>
           </configuration>
         </plugin>
 
