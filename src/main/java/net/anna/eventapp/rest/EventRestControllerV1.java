@@ -120,7 +120,7 @@ public class EventRestControllerV1 extends HttpServlet {
                     messageWriter.println(" does not exist");
                 }
                 else{
-                    fileService.deleteById(id1);
+                    eventService.deleteById(id1);
                     messageWriter.println("  deleted");
                 }
                 break;
