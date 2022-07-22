@@ -114,15 +114,18 @@ public class EventRestControllerV1 extends HttpServlet {
                 Long id1 = Long.parseLong(idS5);
                 EventEntity eventEntity = eventService.getById(id1);
 
-                EventDto eventDto5 = EventDto.fromEntity(eventEntity);
-                messageWriter.println("Event " + new Gson().toJson(eventDto5));
-                if (eventEntity==null) {
-                    messageWriter.println(" does not exist");
-                }
-                else{
-                    eventService.deleteById(id1);
-                    messageWriter.println("  deleted");
-                }
+              //  EventDto eventDto5 = EventDto.fromEntity(eventEntity);
+                
+                 eventService.deleteById(id1);
+                 messageWriter.println("  deleted");
+//                 messageWriter.println("Event " + new Gson().toJson(eventDto5));
+//                 if (eventEntity==null) {
+//                     messageWriter.println(" does not exist");
+//                 }
+//                 else{
+//                     eventService.deleteById(id1);
+//                     messageWriter.println("  deleted");
+//                 }
                 break;
             default:
                 messageWriter.println("Error");
