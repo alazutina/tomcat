@@ -37,7 +37,7 @@ public class UserRestControllerV1 extends HttpServlet {
             case "getall":
                 List<UserEntity> userList;
                 userList = userService.getAll();
-                messageWriter.println(userList);
+              //  messageWriter.println(userList);
                 for(UserEntity user: userList){
                     UserDto userDto = UserDto.fromEntity(user);
                     messageWriter.println(new Gson().toJson(userDto));
