@@ -73,11 +73,11 @@ public class HibernateFile implements FileRepository {
             transaction = session.beginTransaction();
 
             FileEntity file = (FileEntity) session.get(FileEntity.class, id);
-            String hql = "delete Event where id_file= :id";
+            String hql = "delete EventEntity where id_file= :id";
             Query query = session.createQuery(hql);
             query.setParameter("id", id);
             query.executeUpdate();
-
+            
             session.delete(file);
             transaction.commit();
         }
