@@ -68,12 +68,25 @@ public class HibernateEvent implements EventRepository {
     public void deleteById(Long id) {
         Transaction transaction = null;
         try (Session session = this.sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            String hql = "delete EventEntity where id= :id";
-            Query query = session.createQuery(hql);
-            query.setParameter("id", id);
-            query.executeUpdate();
+//             transaction = session.beginTransaction();
+//             String hql = "delete EventEntity where id= :id";
+//             Query query = session.createQuery(hql);
+//             query.setParameter("id", id);
+//             query.executeUpdate();
+//             transaction.commit();
+            
+            
+           transaction = session.beginTransaction();
+           EventEntity event = (EventEntity) session.get(EventEntity.class, id);
+
+//             String hql = "delete EventEntity where id_user= :id";
+//             Query query = session.createQuery(hql);
+//             query.setParameter("id", id);
+//             query.executeUpdate();
+
+            session.delete(event);
             transaction.commit();
+            
         } catch (Exception e) {
             if (transaction != null) {
                 System.out.println("");
