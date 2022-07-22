@@ -37,7 +37,8 @@ public class HibernateUser implements UserRepository {
         Transaction transaction = null;
         try(      Session session = this.sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from UserEntity u Left Join Fetch u.events ", UserEntity.class);
+            Query query = session.createQuery("from UserEntity  ", UserEntity.class);
+        //    Query query = session.createQuery("from UserEntity u Left Join Fetch u.events ", UserEntity.class);
             List<UserEntity> users = query.getResultList();
             transaction.commit();
             return users;
