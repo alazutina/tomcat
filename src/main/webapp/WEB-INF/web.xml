@@ -31,32 +31,32 @@
 
     <servlet-mapping>
         <servlet-name>UserRestControllerV1</servlet-name>
-        <url-pattern>/V1/Users</url-pattern>
+        <url-pattern>/api/v1/users</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>UserRestControllerV1</servlet-name>
-        <url-pattern>/V1/Users/*</url-pattern>
+        <url-pattern>/api/v1/users/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>FileRestControllerV1</servlet-name>
-        <url-pattern>/V1/Files</url-pattern>
+        <url-pattern>/api/v1/files</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>FileRestControllerV1</servlet-name>
-        <url-pattern>/V1/Files/*</url-pattern>
+        <url-pattern>/api/v1/files/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>EventRestControllerV1</servlet-name>
-        <url-pattern>/V1/Events</url-pattern>
+        <url-pattern>/api/v1/events</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>EventRestControllerV1</servlet-name>
-        <url-pattern>/V1/Events/*</url-pattern>
+        <url-pattern>/api/v1/events/*</url-pattern>
     </servlet-mapping>
 
   </web-app>
