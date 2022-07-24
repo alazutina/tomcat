@@ -2,7 +2,9 @@ package net.anna.eventapp.rest;
 
 import com.google.gson.Gson;
 import net.anna.eventapp.dto.FileDto;
+import net.anna.eventapp.dto.UserDto;
 import net.anna.eventapp.model.FileEntity;
+import net.anna.eventapp.model.UserEntity;
 import net.anna.eventapp.service.FileService;
 
 import javax.servlet.ServletConfig;
@@ -27,78 +29,74 @@ public class FileRestControllerV1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-        String action = request.getParameter("action");
-        System.out.println("Enter doGet" +action);
-
-
+        String pathInfo = request.getPathInfo();
         response.setContentType("application/json");
         PrintWriter messageWriter = response.getWriter();
-        switch (action == null ? "info" : action) {
-            case "getall":
+
+        if(pathInfo==null){
                 List<FileEntity> files;
                 files = fileService.getAll();
                 for(FileEntity file1 : files){
                       FileDto fileDto1 = FileDto.fromEntity(file1);
                     messageWriter.println(new Gson().toJson(fileDto1));
-                }
-                break;
-            case "getbyid": //          default:
-                String idS = request.getParameter("id");
-                Long id = Long.parseLong(idS);
+                }}
+        else{
+                Long id = Long.valueOf(pathInfo.substring(1));
                 FileEntity file = fileService.getById(id);
                 FileDto fileDto = FileDto.fromEntity(file);
                 messageWriter.println(new Gson().toJson(fileDto));
-                break;
-            default:
-                messageWriter.println("Error");
-                break;
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        System.out.println("Enter doGet" +action);
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String pathInfo = request.getPathInfo();
+        Long id = Long.valueOf(pathInfo.substring(1));
 
         response.setContentType("application/json");
         PrintWriter messageWriter = response.getWriter();
-        switch (action == null ? "info" : action) {
-            case "update":
-                String idS = request.getParameter("id");
-                Long id = Long.parseLong(idS);
+
                 String path = request.getParameter("path");
                 FileEntity file1 = fileService.getById(id);
                 FileEntity file2 = fileService.update(file1.getId(),path);
                 FileDto fileDto1 = FileDto.fromEntity(file2);
                 messageWriter.println(new Gson().toJson(fileDto1));
-                break;
-            case "save":
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+                response.setContentType("application/json");
+                PrintWriter messageWriter = response.getWriter();
+
                 String path1 = request.getParameter("path");
                 FileEntity file3 = new FileEntity();
                 file3.setPath(path1);
                 FileEntity file4 = fileService.save(file3.getPath());
                 FileDto fileDto2 = FileDto.fromEntity(file4);
                 messageWriter.println(new Gson().toJson(fileDto2));
-                break;
-            case "delete":
-                String idS1 = request.getParameter("id");
-                Long id1 = Long.parseLong(idS1);
-                FileEntity file5 = fileService.getById(id1);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String pathInfo = request.getPathInfo();
+        Long id = Long.valueOf(pathInfo.substring(1));
+
+        response.setContentType("application/json");
+        PrintWriter messageWriter = response.getWriter();
+
+                FileEntity file5 = fileService.getById(id);
                 FileDto fileDto3 = FileDto.fromEntity(file5);
                 messageWriter.println("File " + new Gson().toJson(fileDto3));
                 if (file5==null) {
                     messageWriter.println(" does not exist");
                 }
                 else{
-                    fileService.deleteById(id1);
+                    fileService.deleteById(id);
                     messageWriter.println(" deleted");
                 }
-                break;
-            default:
-                messageWriter.println("Error");
-                break;
 
-        }
     }
 }

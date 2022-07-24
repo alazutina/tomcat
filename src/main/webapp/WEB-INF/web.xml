@@ -24,19 +24,39 @@
         <!--        <load-on-startup>1</load-on-startup>-->
     </servlet>
 
-  <servlet-mapping>
-    <servlet-name>UserRestControllerV1</servlet-name>
-    <url-pattern>/UserRestControllerV1</url-pattern>
-  </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>UserRestControllerV1</servlet-name>-->
+<!--    <url-pattern>/Users</url-pattern>-->
+<!--  </servlet-mapping>-->
+
+    <servlet-mapping>
+        <servlet-name>UserRestControllerV1</servlet-name>
+        <url-pattern>/V1/Users</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UserRestControllerV1</servlet-name>
+        <url-pattern>/V1/Users/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>FileRestControllerV1</servlet-name>
-        <url-pattern>/FileRestControllerV1</url-pattern>
+        <url-pattern>/V1/Files</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FileRestControllerV1</servlet-name>
+        <url-pattern>/V1/Files/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>EventRestControllerV1</servlet-name>
-        <url-pattern>/EventRestControllerV1</url-pattern>
+        <url-pattern>/V1/Events</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EventRestControllerV1</servlet-name>
+        <url-pattern>/V1/Events/*</url-pattern>
     </servlet-mapping>
 
   </web-app>
